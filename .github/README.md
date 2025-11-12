@@ -62,14 +62,14 @@ nvim () {
   if [ ! $# -eq 0 ]; then
     [[ -d "$1" ]] || [[ -f "$1" ]] || touch "$1"
     [[ -f "$1" ]] && NWD="$(dirname $1)" || NWD="$(realpath $1)"
-    docker run -it --rm --name nvim-docker-cli \
+    docker run -it --rm --name nvim-docker-cli-$(date +%s) \
     -w "/edit$NWD" \
     -v "$(realpath $1)":"/edit$(realpath $1)" \
     -v /mnt/user/appdata/nvim-docker:/root \
     ghcr.io/lanjelin/nvim-docker:latest \
     nvim "/edit$(realpath $1)"
   else
-    docker run -it --rm --name nvim-docker-cli \
+    docker run -it --rm --name nvim-docker-cli-$(date +%s) \
     -w "/root" \
     -v /mnt/user/appdata/nvim-docker:/root \
     ghcr.io/lanjelin/nvim-docker:latest \
@@ -88,14 +88,14 @@ function nvim
     if set -q argv[1]
         test -d "$argv[1]" || test -f "$argv[1]" || touch "$argv[1]"
         test -f "$argv[1]" && set NWD "$(dirname $argv[1])" || set NWD "$(realpath $argv[1])"
-        docker run -it --rm --name nvim-docker-cli \
+        docker run -it --rm --name nvim-docker-cli-$(date +%s) \
         -w "/edit$NWD" \
         -v "$(realpath $argv[1])":"/edit$(realpath $argv[1])" \
         -v /mnt/user/appdata/nvim-docker:/root \
         ghcr.io/lanjelin/nvim-docker:latest \
         nvim "/edit$(realpath $argv[1])"
     else
-        docker run -it --rm --name nvim-docker-cli \
+        docker run -it --rm --name nvim-docker-cli-$(date +%s) \
         -w "/root" \
         -v /mnt/user/appdata/nvim-docker:/root \
         ghcr.io/lanjelin/nvim-docker:latest \
